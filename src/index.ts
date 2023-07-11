@@ -4,7 +4,7 @@ const PORT = 4000;
 
 const app = express();
 
-app.get("/", (_req, res) => {
+app.get("/", (req, res) => {
 	return res.json({ message: "Server running!" });
 });
 
