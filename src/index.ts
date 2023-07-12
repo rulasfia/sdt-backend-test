@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import userRouter from "./module/user/user.router";
+import locationRouter from "./module/location/location.router";
 import { connectToDatabase } from "./lib/db/database";
 
 const PORT = 4000;
@@ -19,5 +20,7 @@ app.get("/", (req, res) => {
 
 /** users */
 app.use("/user", userRouter);
+/** location */
+app.use("/location", locationRouter);
 
 app.listen(PORT, () => console.log(`listening in port ${PORT}`));
