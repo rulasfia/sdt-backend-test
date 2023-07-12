@@ -25,6 +25,7 @@ module.exports = {
 		{
 			files: ["*.js", "*.cjs", "*.mjs"],
 			extends: ["plugin:@typescript-eslint/disable-type-checked"],
+			"@typescript-eslint/no-var-requires": "warning",
 		},
 	],
 };

@@ -1,0 +1,41 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+generator kysely {
+  provider     = "prisma-kysely" // generate prisma ts types for kysely instead of prisma client 
+  output       = "../src/lib/db"
+  fileName     = "database.types.ts"
+  enumFileName = "enums.ts"
+}
+
+model users {
+  id               String   @id @db.VarChar(255)
+  first_name       String   @db.VarChar(255)
+  last_name        String   @db.VarChar(255)
+  birthday         DateTime
+  location_address String
+  location_city_id Int      @db.UnsignedMediumInt
+  created_at       DateTime @default(now())
+  updated_at       DateTime
+
+  city cities @relation(fields: [location_city_id], references: [id])
+}
+
+model countries {
+  id       Int    @id @db.UnsignedMediumInt
+  name     String @db.VarChar(255)
+  iso_name String @db.Char(2)
+
+  cities cities[]
+}
+
+model cities {
+  id         Int    @id @db.UnsignedMediumInt
+  name       String @db.VarChar(255)
+  country_id Int    @db.UnsignedMediumInt
+
+  country countries @relation(fields: [country_id], references: [id])
+  users   users[]
+}
