@@ -7,6 +7,8 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 export type cities = {
     id: number;
     name: string;
+    latitude: string;
+    longitude: string;
     country_id: number;
 };
 export type countries = {

@@ -17,5 +17,17 @@ export async function findCities(params: GetCityType["query"]) {
 		);
 	}
 
-	return await query.selectAll().execute();
+	const res = await query.selectAll().execute();
+
+	return res;
+}
+
+export async function findCityById(id: number) {
+	const res = await db()
+		.selectFrom("cities")
+		.where("cities.id", "=", id)
+		.selectAll()
+		.execute();
+
+	return res;
 }

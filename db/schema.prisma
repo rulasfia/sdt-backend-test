@@ -32,9 +32,11 @@ model countries {
 }
 
 model cities {
-  id         Int    @id @db.UnsignedMediumInt
-  name       String @db.VarChar(255)
-  country_id Int    @db.UnsignedMediumInt
+  id         Int     @id @db.UnsignedMediumInt
+  name       String  @db.VarChar(255)
+  latitude   Decimal @db.Decimal(10, 8)
+  longitude  Decimal @db.Decimal(11, 8)
+  country_id Int     @db.UnsignedMediumInt
 
   country countries @relation(fields: [country_id], references: [id])
   users   users[]
