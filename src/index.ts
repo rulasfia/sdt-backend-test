@@ -11,6 +11,8 @@ const app = express();
 /** connect to database */
 connectToDatabase(DB_URL);
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
 	return res.json({ message: "Server running!" });
 });
