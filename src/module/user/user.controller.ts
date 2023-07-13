@@ -1,7 +1,9 @@
 import type { Request, Response } from "express";
+import type { User } from "./user.repository";
 import { findAllUser, insertNewUser } from "./user.repository";
 import { CreateUserType } from "./user.schema";
 import { generateID } from "@/utils/IDGenerator";
+import { addNewBirthdayJob } from "@/lib/scheduler";
 
 export async function getUserHandler(req: Request, res: Response) {
 	const users = await findAllUser();
@@ -15,17 +17,17 @@ export async function postUserHandler(
 ) {
 	console.log(req.body);
 	const id = await generateID();
-	// const [dd, mm, yyyy] = req.body.birthday.split("/");
-	const newUser = {
+
+	const newUser: User = {
 		id,
 		...req.body,
-		birthday: new Date(req.body.birthday),
+		birthday: new Date(`${req.body.birthday} UTC`),
 		created_at: new Date(),
 		updated_at: new Date(),
 	};
 
-	console.log(new Date(req.body.birthday));
 	await insertNewUser(newUser);
+	await addNewBirthdayJob(newUser);
 
 	return res.status(201).json({ data: newUser });
 }

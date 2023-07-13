@@ -26,6 +26,7 @@ export async function findCityById(id: number) {
 	const res = await db()
 		.selectFrom("cities")
 		.where("cities.id", "=", id)
+		.limit(1)
 		.selectAll()
 		.execute();
 
