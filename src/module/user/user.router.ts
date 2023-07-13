@@ -5,11 +5,13 @@ import {
 	postUserHandler,
 	putUserHandler,
 } from "./user.controller";
+import validate from "@/middleware/validateMiddleware";
+import { createUserSchema } from "./user.schema";
 
 const router = express.Router();
 
 router.get("/", getUserHandler);
-router.post("/", postUserHandler);
+router.post("/", validate(createUserSchema), postUserHandler);
 router.put("/:userId", putUserHandler);
 router.delete("/:userId", deleteUserHandler);
 

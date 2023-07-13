@@ -1,11 +1,33 @@
 import type { Request, Response } from "express";
+import { findAllUser, insertNewUser } from "./user.repository";
+import { CreateUserType } from "./user.schema";
+import { generateID } from "@/utils/IDGenerator";
 
-export function getUserHandler(req: Request, res: Response) {
-	return res.json({ message: "getting all user" });
+export async function getUserHandler(req: Request, res: Response) {
+	const users = await findAllUser();
+
+	return res.status(200).json({ data: users });
 }
 
-export function postUserHandler(req: Request, res: Response) {
-	return res.json({ message: "creating new user" });
+export async function postUserHandler(
+	req: Request<{}, {}, CreateUserType["body"]>,
+	res: Response
+) {
+	console.log(req.body);
+	const id = await generateID();
+	// const [dd, mm, yyyy] = req.body.birthday.split("/");
+	const newUser = {
+		id,
+		...req.body,
+		birthday: new Date(req.body.birthday),
+		created_at: new Date(),
+		updated_at: new Date(),
+	};
+
+	console.log(new Date(req.body.birthday));
+	await insertNewUser(newUser);
+
+	return res.status(201).json({ data: newUser });
 }
 
 export function putUserHandler(
