@@ -9,6 +9,7 @@ test("new user resource validation", async () => {
 		id: id,
 		first_name: "Lorem",
 		last_name: "Ipsum",
+		email: "lorem@email.com",
 		birthday: "1925/01/18",
 		location_address: "Somewhere",
 		location_city_id: 219,

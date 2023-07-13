@@ -1,15 +1,24 @@
 import type { Request, Response } from "express";
-import type { GetCityDetailType, GetCityType } from "./location.schema";
-import { findCities, findCityById } from "./location.repository";
+import type {
+	GetCityDetailType,
+	GetCityType,
+	GetCountryType,
+} from "./location.schema";
+import { findCities, findCityById, findCountries } from "./location.repository";
+
+export async function getCountryHandler(
+	req: Request<{}, {}, {}, GetCountryType["query"]>,
+	res: Response
+) {
+	const countries = await findCountries(req.query);
+
+	return res.status(200).json({ data: countries });
+}
 
 export async function getCityHandler(
 	req: Request<{}, {}, {}, GetCityType["query"]>,
 	res: Response
 ) {
-	if (!req.query.country_id && !req.query.name) {
-		return res.status(200).json({ data: [] });
-	}
-
 	const cities = await findCities(req.query);
 
 	return res.status(200).json({ data: cities });
