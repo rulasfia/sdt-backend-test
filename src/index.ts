@@ -1,14 +1,15 @@
 import "dotenv/config";
-import express from "express";
-import userRouter from "./module/user/user.router";
-import locationRouter from "./module/location/location.router";
+import { json } from "express";
+import { createServer } from "./lib/server";
 import { connectToDatabase } from "./lib/db/database";
 import { setupBirthdayJob } from "./lib/scheduler";
+import userRouter from "./module/user/user.router";
+import locationRouter from "./module/location/location.router";
 
 const PORT = 4000;
 const DB_URL = process.env.DB_URL;
 
-const app = express();
+const app = createServer();
 
 /** connect to database */
 connectToDatabase(DB_URL);
@@ -16,7 +17,7 @@ connectToDatabase(DB_URL);
 /** setup birthday job for existing user */
 setupBirthdayJob();
 
-app.use(express.json());
+app.use(json());
 
 app.get("/", (req, res) => {
 	return res.json({ message: "Server running!" });

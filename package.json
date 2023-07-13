@@ -6,13 +6,14 @@
   "scripts": {
     "dev": "tsx watch ./src/index.ts",
     "migrate": "prisma migrate dev --schema=./db/schema.prisma",
-    "seed": "node ./db/seed.mjs"
+    "seed": "node ./db/seed.mjs",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "kysely": "^0.26.1",
@@ -33,6 +34,7 @@
     "prisma": "^4.16.2",
     "prisma-kysely": "^1.5.0",
     "tsx": "^3.12.7",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vitest": "^0.33.0"
   }
 }
