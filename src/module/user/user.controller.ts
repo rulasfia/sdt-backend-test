@@ -11,7 +11,7 @@ import {
 	addNewBirthdayJob,
 	removeBirthdayJob,
 	rescheduleBirthdayJob,
-} from "@/lib/scheduler";
+} from "@/lib/scheduler/birthdayScheduler";
 
 export async function getUserHandler(req: Request, res: Response) {
 	const users = await findAllUser();

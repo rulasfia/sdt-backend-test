@@ -1,4 +1,4 @@
-import { fetcher } from "../fetcher";
+import { fetcher } from "@/utils/fetcher";
 
 const TIMEZONE_API_URL = "https://maps.googleapis.com/maps/api/timezone/json";
 

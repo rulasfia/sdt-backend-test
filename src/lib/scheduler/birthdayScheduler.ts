@@ -1,7 +1,8 @@
 import { findCityById } from "@/module/location/location.repository";
 import { User, findAllUser } from "@/module/user/user.repository";
-import { getTimezoneData } from "@/utils/external/TimeZoneGetter";
+import { getTimezoneData } from "@/external/timeZoneService";
 import schedule from "node-schedule";
+import { sendEmail } from "@/external/emailService";
 
 /**
  * run this function everytime app start
@@ -25,11 +26,16 @@ export async function setupBirthdayJob() {
 		rule.minute = 0;
 		rule.tz = tz.timeZoneId;
 
-		schedule.scheduleJob(user.id, rule, (fireDate) => {
-			console.log(
-				`${fireDate.toDateString()} - Happy birthday ${user.first_name}`
-			);
-			// send email here
+		schedule.scheduleJob(user.id, rule, async (fireDate) => {
+			console.log(`${fireDate} - ${user.id}`);
+
+			const message = `Hey, ${user.first_name} ${user.last_name} it's your birthday`;
+			const res = await sendEmail({
+				email: user.email,
+				message: message,
+			});
+
+			console.log(res);
 		});
 	}
 }
@@ -54,11 +60,16 @@ export async function addNewBirthdayJob(user: User) {
 	rule.minute = 0;
 	rule.tz = tz.timeZoneId;
 
-	schedule.scheduleJob(user.id, rule, (fireDate) => {
-		console.log(
-			`${fireDate.toDateString()} - Happy birthday ${user.first_name}`
-		);
-		// send email here
+	schedule.scheduleJob(user.id, rule, async (fireDate) => {
+		console.log(`${fireDate} - ${user.id}`);
+
+		const message = `Hey, ${user.first_name} ${user.last_name} it's your birthday`;
+		const res = await sendEmail({
+			email: user.email,
+			message: message,
+		});
+
+		console.log(res);
 	});
 }
 

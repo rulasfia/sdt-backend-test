@@ -2,7 +2,7 @@ import "dotenv/config";
 import { json } from "express";
 import { createServer } from "./lib/server";
 import { connectToDatabase } from "./lib/db/database";
-import { setupBirthdayJob } from "./lib/scheduler";
+import { setupBirthdayJob } from "./lib/scheduler/birthdayScheduler";
 import userRouter from "./module/user/user.router";
 import locationRouter from "./module/location/location.router";
 

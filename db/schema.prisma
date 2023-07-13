@@ -14,6 +14,7 @@ model users {
   id               String   @id @db.VarChar(255)
   first_name       String   @db.VarChar(255)
   last_name        String   @db.VarChar(255)
+  email            String   @unique @db.VarChar(255)
   birthday         DateTime
   location_address String
   location_city_id Int      @db.UnsignedMediumInt
