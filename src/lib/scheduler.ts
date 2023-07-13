@@ -68,7 +68,6 @@ export async function addNewBirthdayJob(user: User) {
  */
 export function removeBirthdayJob(id: User["id"]) {
 	const userJob = schedule.scheduledJobs[id];
-	console.log(userJob.name, userJob.nextInvocation());
 
 	userJob.cancel();
 }
@@ -82,7 +81,6 @@ export async function rescheduleBirthdayJob(
 	user: Omit<User, "id" | "created_at">
 ) {
 	const userJob = schedule.scheduledJobs[id];
-	console.log(userJob.name, userJob.nextInvocation());
 
 	const city = await findCityById(user.location_city_id);
 

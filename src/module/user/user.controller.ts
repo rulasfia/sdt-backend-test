@@ -1,9 +1,17 @@
 import type { Request, Response } from "express";
-import type { User } from "./user.repository";
-import { findAllUser, insertNewUser, updateUserById } from "./user.repository";
-import { CreateUserType, UpdateUserType } from "./user.schema";
+import type {
+	CreateUserType,
+	UpdateUserType,
+	UserDetailType,
+} from "./user.schema";
 import { generateID } from "@/utils/IDGenerator";
-import { addNewBirthdayJob, rescheduleBirthdayJob } from "@/lib/scheduler";
+import { User, deleteUserById } from "./user.repository";
+import { findAllUser, insertNewUser, updateUserById } from "./user.repository";
+import {
+	addNewBirthdayJob,
+	removeBirthdayJob,
+	rescheduleBirthdayJob,
+} from "@/lib/scheduler";
 
 export async function getUserHandler(req: Request, res: Response) {
 	const users = await findAllUser();
@@ -50,11 +58,14 @@ export async function putUserHandler(
 	return res.json({ message: "OK" });
 }
 
-export function deleteUserHandler(
-	req: Request<{ userId: string }>,
+export async function deleteUserHandler(
+	req: Request<UserDetailType["params"]>,
 	res: Response
 ) {
-	const { userId } = req.params;
+	const { id } = req.params;
 
-	return res.json({ message: "deleting user by id with id = " + userId });
+	await deleteUserById(id);
+	removeBirthdayJob(id);
+
+	return res.json({ message: "OK" });
 }

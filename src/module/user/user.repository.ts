@@ -25,3 +25,7 @@ export async function updateUserById(id: string, user: EditedUser) {
 		.where("users.id", "=", id)
 		.execute();
 }
+
+export async function deleteUserById(id: string) {
+	return db().deleteFrom("users").where("users.id", "=", id).execute();
+}

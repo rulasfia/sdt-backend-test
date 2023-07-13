@@ -31,3 +31,11 @@ export const updateUserSchema = z.object({
 });
 
 export type UpdateUserType = z.infer<typeof updateUserSchema>;
+
+export const userDetailSchema = z.object({
+	params: z.object({
+		id: z.string(),
+	}),
+});
+
+export type UserDetailType = z.infer<typeof userDetailSchema>;
