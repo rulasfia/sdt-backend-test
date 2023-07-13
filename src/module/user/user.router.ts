@@ -6,13 +6,13 @@ import {
 	putUserHandler,
 } from "./user.controller";
 import validate from "@/middleware/validateMiddleware";
-import { createUserSchema } from "./user.schema";
+import { createUserSchema, updateUserSchema } from "./user.schema";
 
 const router = express.Router();
 
 router.get("/", getUserHandler);
 router.post("/", validate(createUserSchema), postUserHandler);
-router.put("/:userId", putUserHandler);
-router.delete("/:userId", deleteUserHandler);
+router.put("/:id", validate(updateUserSchema), putUserHandler);
+router.delete("/:id", deleteUserHandler);
 
 export default router;

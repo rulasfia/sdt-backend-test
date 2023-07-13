@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import type { User } from "./user.repository";
-import { findAllUser, insertNewUser } from "./user.repository";
-import { CreateUserType } from "./user.schema";
+import { findAllUser, insertNewUser, updateUserById } from "./user.repository";
+import { CreateUserType, UpdateUserType } from "./user.schema";
 import { generateID } from "@/utils/IDGenerator";
-import { addNewBirthdayJob } from "@/lib/scheduler";
+import { addNewBirthdayJob, rescheduleBirthdayJob } from "@/lib/scheduler";
 
 export async function getUserHandler(req: Request, res: Response) {
 	const users = await findAllUser();
@@ -15,7 +15,7 @@ export async function postUserHandler(
 	req: Request<{}, {}, CreateUserType["body"]>,
 	res: Response
 ) {
-	console.log(req.body);
+	// console.log(req.body);
 	const id = await generateID();
 
 	const newUser: User = {
@@ -32,13 +32,22 @@ export async function postUserHandler(
 	return res.status(201).json({ data: newUser });
 }
 
-export function putUserHandler(
-	req: Request<{ userId: string }>,
+export async function putUserHandler(
+	req: Request<UpdateUserType["params"], {}, UpdateUserType["body"]>,
 	res: Response
 ) {
-	const { userId } = req.params;
+	const { id } = req.params;
 
-	return res.json({ message: "updating user by id with id = " + userId });
+	const updatedUser = {
+		...req.body,
+		birthday: new Date(`${req.body.birthday} UTC`),
+		updated_at: new Date(),
+	};
+
+	await updateUserById(id, updatedUser);
+	await rescheduleBirthdayJob(id, updatedUser);
+
+	return res.json({ message: "OK" });
 }
 
 export function deleteUserHandler(

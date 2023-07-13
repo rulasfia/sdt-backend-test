@@ -1,6 +1,6 @@
 import { findCityById } from "@/module/location/location.repository";
 import { User, findAllUser } from "@/module/user/user.repository";
-import { timezoneGetter } from "@/utils/external/TimeZoneGetter";
+import { getTimezoneData } from "@/utils/external/TimeZoneGetter";
 import schedule from "node-schedule";
 
 /**
@@ -15,7 +15,7 @@ export async function setupBirthdayJob() {
 
 		if (city.length < 1) continue;
 
-		const tz = await timezoneGetter(city[0].latitude, city[0].longitude);
+		const tz = await getTimezoneData(city[0].latitude, city[0].longitude);
 
 		/** run job every year at 9 AM local timezone */
 		const rule = new schedule.RecurrenceRule();
@@ -44,7 +44,7 @@ export async function addNewBirthdayJob(user: User) {
 
 	if (city.length < 1) return;
 
-	const tz = await timezoneGetter(city[0].latitude, city[0].longitude);
+	const tz = await getTimezoneData(city[0].latitude, city[0].longitude);
 
 	/** run job every year at 9 AM local timezone */
 	const rule = new schedule.RecurrenceRule();
@@ -77,15 +77,18 @@ export function removeBirthdayJob(id: User["id"]) {
  * run this function everytime user data updated
  * to reschedule the job
  */
-export async function rescheduleBirthdayJob(user: User) {
-	const userJob = schedule.scheduledJobs[user.id];
+export async function rescheduleBirthdayJob(
+	id: string,
+	user: Omit<User, "id" | "created_at">
+) {
+	const userJob = schedule.scheduledJobs[id];
 	console.log(userJob.name, userJob.nextInvocation());
 
 	const city = await findCityById(user.location_city_id);
 
 	if (city.length < 1) return;
 
-	const tz = await timezoneGetter(city[0].latitude, city[0].longitude);
+	const tz = await getTimezoneData(city[0].latitude, city[0].longitude);
 
 	/** run job every year at 9 AM local timezone */
 	const rule = new schedule.RecurrenceRule();
