@@ -28,3 +28,37 @@ export const getCountrySchema = z.object({
 });
 
 export type GetCountryType = z.infer<typeof getCountrySchema>;
+
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    GetCountryResponse:
+ *      type: object
+ *      properties:
+ *        data:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: number
+ *            name:
+ *              type: string
+ *            iso_name:
+ *              type: string
+ *    GetCityResponse:
+ *      type: object
+ *      properties:
+ *        data:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: number
+ *            name:
+ *              type: string
+ *            country_id:
+ *              type: number
+ *            latitude:
+ *              type: string
+ *            longitude:
+ *              type: string
+ */

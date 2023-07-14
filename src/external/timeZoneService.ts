@@ -18,7 +18,5 @@ export async function getTimezoneData(lat: string, long: string) {
 
 	const data = await fetcher<TimezoneApiResponse>(url);
 
-	console.log({ url, data });
-
 	return data;
 }

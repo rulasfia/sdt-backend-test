@@ -6,6 +6,7 @@ import { connectToDatabase } from "./lib/db/database";
 import { setupBirthdayJob } from "./lib/scheduler/birthdayScheduler";
 import userRouter from "./module/user/user.router";
 import locationRouter from "./module/location/location.router";
+import { swaggerDocs } from "./utils/swagger";
 
 const PORT = 4000;
 const DB_URL = process.env.DB_URL;
@@ -16,13 +17,16 @@ export function createServer() {
 	app.use(json());
 
 	app.get("/", (req, res) => {
-		return res.json({ message: "Server running!" });
+		return res.json({ message: "Server running! swagger available at /docs" });
 	});
 
 	/** users */
 	app.use("/user", userRouter);
 	/** location */
 	app.use("/location", locationRouter);
+
+	/** docs */
+	swaggerDocs(app);
 
 	/** setup birthday job for existing user */
 	setupBirthdayJob();
